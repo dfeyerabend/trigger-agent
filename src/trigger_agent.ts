@@ -44,9 +44,9 @@ const stats = {
     startTime: new Date()
 };
 
-// Helper function for
+// Helper function for logging results
 async function logRequest(entry: Record<string, unknown>) {
-    try { await appendFile("requests.log", JSON.stringify(entry) + "\n"); } catch {} // Prevents crashes during logging
+    try { await appendFile("requests.log", JSON.stringify(entry) + "\n"); } catch {} // Prevents logging errors from crashing the app
 }
 
 // ============================================
@@ -63,7 +63,18 @@ class UnifiedTriggerHandler {
         try {
             trigger = TriggerSchema.parse(rawTrigger);
         } catch (error) {
+            const durationMs = Date.now() - start;
             stats.failedRequests++;
+
+            // Logg error
+            await logRequest({
+                timestamp: new Date().toISOString(),
+                source: "unknown",
+                taskPreview: null,
+                success: false,
+                error: "Invalid trigger format",
+                durationMs: durationMs
+            });
 
             return {
                 success: false,
@@ -88,9 +99,8 @@ class UnifiedTriggerHandler {
             stats.successfulRequests++;
             stats.totalDurationMs += durationMs;
 
-            console.log(`✅ Done in ${durationMs}ms`);
-
-            return {
+            // Build result object to return and for Log
+            const result = {
                 success: true,
                 result: completion.choices[0]?.message?.content,
                 traceId: trigger.metadata.traceId,
@@ -98,10 +108,35 @@ class UnifiedTriggerHandler {
                 durationMs: durationMs
             };
 
+            // Create Log
+            await logRequest({
+                timestamp: new Date().toISOString(),
+                source: trigger.source,
+                traceId: trigger.metadata.traceId,
+                taskPreview: trigger.payload.task.slice(0, 50),
+                success: true,
+                durationMs: durationMs
+            });
+
+            console.log(`✅ Done in ${durationMs}ms`);
+
+            return result;
+
         } catch (error: any) {
             const durationMs = Date.now() - start;
             stats.failedRequests++;
             stats.totalDurationMs += durationMs;
+
+            // Log for failed request
+            await logRequest({
+                timestamp: new Date().toISOString(),
+                source: trigger.source,
+                traceId: trigger.metadata.traceId,
+                taskPreview: trigger.payload.task.slice(0, 50),
+                success: false,
+                error: error?.message ?? "Unknown error",
+                durationMs: durationMs
+            });
 
             console.log(`❌ Error: ${error.message}`);
             return {

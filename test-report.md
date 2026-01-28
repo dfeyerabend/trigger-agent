@@ -139,3 +139,23 @@ success error                  durationMs
 ### ✅ Test bestanden!
 
 ---
+
+## ✅ Test 6 – **Logging testen**
+
+### 🔍 Was wurde getestet
+- Ob Requests durch den Log erfasst werden
+- Ob der Log Korrekt erstellt und wieder ausgegeben wird
+
+### ▶️ Ausgeführter Befehl
+```bash
+Invoke-RestMethod -Method POST -Uri "http://localhost:3333/agent" -ContentType "application/json" -Body '{"task":"Logging Test: Was ist 2+2?"}'
+Get-Content .\requests.log -Tail 5
+```
+### 🖥️ Konsolen-Output
+```
+{"timestamp":"2026-01-28T08:01:44.777Z","source":"api","traceId":"54fbadca-0847-4be4-b3e2-da9d398aab46","taskPreview":"Logging Test: Was ist 2+2?","success":true,"durationMs":1805}
+```
+### ✅ Test bestanden!
+
+---
+

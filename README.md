@@ -12,6 +12,7 @@ A small TypeScript showcase project that demonstrates a "triggerable" agent: a s
 - Integration with OpenAI via the `openai` SDK.
 - Lightweight stats tracking: total requests, successes, failures, average duration.
 - Health endpoint that exposes runtime stats.
+- Requests are logged in JSON format 
 
 
 ## Tech stack

@@ -1,13 +1,21 @@
 {
-  "name": "${PROJECT_NAME}",
+  "name": "trigger-agent",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc"
   },
-  "dependencies": {},
+  "dependencies": {
+    "express": "^5.2.1",
+    "openai": "^6.16.0",
+    "ws": "^8.19.0",
+    "zod": "^4.3.6"
+  },
   "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^5.0.6",
+    "@types/ws": "^8.18.1",
     "typescript": "^5.5.3"
   },
   "private": true

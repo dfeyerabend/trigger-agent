@@ -148,28 +148,9 @@ netstat -ano | findstr ":3333"
 taskkill /F /PID <pid>
 ```
 
-
 ## Notes & best practices
 
 - Do not commit secrets (add `.env` to `.gitignore`).
 - The repository includes `2026-01-27_Dienstag_HOMEWORK.md` which documents the dependencies and an extended walkthrough — it was used as context for this README.
 - Ignore `test-report.md` (not part of the published README content).
 
-
-## Contributing
-
-Feel free to open issues or pull requests. Suggested small improvements:
-
-- Add a `package.json` script to start the server (e.g. `start`),
-- Add unit tests for the handler and schema,
-- Implement graceful shutdown and connection counting.
-
-
-## License
-
-Add a `LICENSE` file (for example MIT) if you plan to open-source this repository.
-
-
----
-
-If you'd like, I can also add a short `scripts` entry to `package.json`, add a `.gitignore` entry for `.env`, or create a small example curl script for convenience.
